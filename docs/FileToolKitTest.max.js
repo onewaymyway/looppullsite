@@ -413,6 +413,7 @@ var Laya=window.Laya=(function(window,document){
 			this.tFile=null;
 			Laya.init(800,600);
 			Laya.stage.scaleMode="full";
+			Laya.stage.screenMode="horizontal";
 			Laya.stage.bgColor="#000000";
 			ContextMenu.init();
 			ContextMenuItem.labelColors="#ffffff,#ffffff,#ffffff,#ffffff";
