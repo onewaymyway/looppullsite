@@ -716,6 +716,8 @@ var Laya=window.Laya=(function(window,document){
 			this.mindMapEditor=null;
 			this.fileKit=null;
 			this.tree=null;
+			this.switchBtn=null;
+			this.container=null;
 			this.tFile=null;
 			this.tID=0;
 			this.preLoadFile=null;
@@ -751,27 +753,44 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		__proto.test=function(){
-			var container;
+			this.switchBtn=new Button();
+			this.switchBtn.skin="comp/button.png";
+			this.switchBtn.label="Switch";
 			if (Browser.pixelRatio > 1){
-				container=new PixelRatioBox();
-				Laya.stage.addChild(container);
-				Laya._currentStage=container;
+				this.container=new PixelRatioBox();
+				Laya.stage.addChild(this.container);
+				Laya._currentStage=this.container;
 				}else{
-				container=Laya.stage;
+				this.container=Laya.stage;
 			}
 			this.tree=new RemoteTreeView();
 			this.tree.top=this.tree.bottom=5;
 			this.tree.fileKit=this.fileKit;
 			this.tree.refresh();
-			container.addChild(this.tree);
+			this.container.addChild(this.tree);
 			this.mindMapEditor=new MindMapEditor();
 			this.mindMapEditor.visible=false;
 			this.mindMapEditor.left=this.tree.x+this.tree.width+2;
 			this.mindMapEditor.right=this.mindMapEditor.top=this.mindMapEditor.bottom=2;
 			this.mindMapEditor.on("Save",this,this.onMindMapSave);
 			this.mindMapEditor.saveBtn.visible=false;
-			container.addChild(this.mindMapEditor);
+			this.container.addChild(this.mindMapEditor);
+			this.container.addChild(this.switchBtn);
+			this.switchBtn.left=this.mindMapEditor.left;
+			this.switchBtn.on("click",this,this.onSwitchBtn);
 			Notice.listen("Open_File",this,this.onOpenFile);
+		}
+
+		__proto.onSwitchBtn=function(){
+			if (this.tree.parent){
+				this.tree.removeSelf();
+				this.mindMapEditor.left=2;
+				this.switchBtn.left=this.mindMapEditor.left;
+				}else{
+				this.container.addChild(this.tree);
+				this.mindMapEditor.left=this.tree.x+this.tree.width+2;
+				this.switchBtn.left=this.mindMapEditor.left;
+			}
 		}
 
 		__proto.onMindMapSave=function(){
