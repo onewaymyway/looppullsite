@@ -29482,7 +29482,11 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		__proto.onRightDown=function(e){
-			if (this.nodeContainer.contains(e.target)&&e.target!=this.nodeContainer)return;
+			if (this.nodeContainer.contains(e.target)&& e.target !=this.nodeContainer)return;
+			if (e.touches && e.touches.length > 1){
+				this.nodeContainer.stopDrag();
+				return;
+			}
 			this.nodeContainer.startDrag();
 			this._userChanged=true;
 		}
