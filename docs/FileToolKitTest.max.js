@@ -11095,6 +11095,7 @@ var Laya=window.Laya=(function(window,document){
 		var __proto=ScaleAction.prototype;
 		__proto.onMouseDown=function(e){
 			var touches=e.touches;
+			MessageManager.I.show("onTouch"+touches);
 			if(touches && touches.length==2){
 				this.lastDistance=this.getDistance(touches);
 				this.addMouseEvents();
@@ -11120,6 +11121,7 @@ var Laya=window.Laya=(function(window,document){
 			var dScale=NaN;
 			dScale=(distance-this.lastDistance)*factor;
 			this._target.event("ScaleActionEvent",dScale);
+			MessageManager.I.show("Event:"+dScale);
 			this.lastDistance=distance;
 		}
 
