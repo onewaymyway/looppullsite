@@ -29462,8 +29462,8 @@ var Laya=window.Laya=(function(window,document){
 			this.saveBtn.zOrder=99;
 			this.saveBtn.on("click",this,this.onActionBtn,["save"]);
 			this.on("mousewheel",this,this.onMouseWheel);
-			ScaleAction.setTargetScaleActionEnabled(this.nodeContainer);
-			this.nodeContainer.on("ScaleActionEvent",this,this.onActionBtn);
+			ScaleAction.setTargetScaleActionEnabled(this);
+			this.on("ScaleActionEvent",this,this.onActionBtn);
 		}
 
 		__class(MindMapEditor,'mindmap.MindMapEditor',_super);
