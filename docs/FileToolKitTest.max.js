@@ -728,6 +728,7 @@ var Laya=window.Laya=(function(window,document){
 			ContextMenu.init();
 			ContextMenuItem.labelColors="#ffffff,#ffffff,#ffffff,#ffffff";
 			ContextMenuItem.btnSkin="comp/button.png";
+			ContextMenuItem.lineSkin="comp/line2.png";
 			View.regComponent("TreeEx",FileTree);
 			var resList;
 			resList=[ {"url":"res/atlas/comp.json","type":"atlas" }];
