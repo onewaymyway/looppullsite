@@ -769,7 +769,7 @@ var Laya=window.Laya=(function(window,document){
 			var obj;
 			obj=this.canParseFileDic[extension].parse(dataO);
 			if (!obj)return;
-			this.tFile="extension/"+fileName.replace(".",".demorender")
+			this.tFile=extension+"/"+fileName.replace(".",".demorender")
 			this.mindMapEditor.setData(obj);
 			this.mindMapEditor.visible=true;
 		}
