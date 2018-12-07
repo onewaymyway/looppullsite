@@ -4365,6 +4365,116 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
+	*<code>Keyboard</code> 类的属性是一些常数，这些常数表示控制游戏时最常用的键。
+	*/
+	//class laya.events.Keyboard
+	var Keyboard=(function(){
+		function Keyboard(){};
+		__class(Keyboard,'laya.events.Keyboard');
+		Keyboard.NUMBER_0=48;
+		Keyboard.NUMBER_1=49;
+		Keyboard.NUMBER_2=50;
+		Keyboard.NUMBER_3=51;
+		Keyboard.NUMBER_4=52;
+		Keyboard.NUMBER_5=53;
+		Keyboard.NUMBER_6=54;
+		Keyboard.NUMBER_7=55;
+		Keyboard.NUMBER_8=56;
+		Keyboard.NUMBER_9=57;
+		Keyboard.A=65;
+		Keyboard.B=66;
+		Keyboard.C=67;
+		Keyboard.D=68;
+		Keyboard.E=69;
+		Keyboard.F=70;
+		Keyboard.G=71;
+		Keyboard.H=72;
+		Keyboard.I=73;
+		Keyboard.J=74;
+		Keyboard.K=75;
+		Keyboard.L=76;
+		Keyboard.M=77;
+		Keyboard.N=78;
+		Keyboard.O=79;
+		Keyboard.P=80;
+		Keyboard.Q=81;
+		Keyboard.R=82;
+		Keyboard.S=83;
+		Keyboard.T=84;
+		Keyboard.U=85;
+		Keyboard.V=86;
+		Keyboard.W=87;
+		Keyboard.X=88;
+		Keyboard.Y=89;
+		Keyboard.Z=90;
+		Keyboard.F1=112;
+		Keyboard.F2=113;
+		Keyboard.F3=114;
+		Keyboard.F4=115;
+		Keyboard.F5=116;
+		Keyboard.F6=117;
+		Keyboard.F7=118;
+		Keyboard.F8=119;
+		Keyboard.F9=120;
+		Keyboard.F10=121;
+		Keyboard.F11=122;
+		Keyboard.F12=123;
+		Keyboard.F13=124;
+		Keyboard.F14=125;
+		Keyboard.F15=126;
+		Keyboard.NUMPAD=21;
+		Keyboard.NUMPAD_0=96;
+		Keyboard.NUMPAD_1=97;
+		Keyboard.NUMPAD_2=98;
+		Keyboard.NUMPAD_3=99;
+		Keyboard.NUMPAD_4=100;
+		Keyboard.NUMPAD_5=101;
+		Keyboard.NUMPAD_6=102;
+		Keyboard.NUMPAD_7=103;
+		Keyboard.NUMPAD_8=104;
+		Keyboard.NUMPAD_9=105;
+		Keyboard.NUMPAD_ADD=107;
+		Keyboard.NUMPAD_DECIMAL=110;
+		Keyboard.NUMPAD_DIVIDE=111;
+		Keyboard.NUMPAD_ENTER=108;
+		Keyboard.NUMPAD_MULTIPLY=106;
+		Keyboard.NUMPAD_SUBTRACT=109;
+		Keyboard.SEMICOLON=186;
+		Keyboard.EQUAL=187;
+		Keyboard.COMMA=188;
+		Keyboard.MINUS=189;
+		Keyboard.PERIOD=190;
+		Keyboard.SLASH=191;
+		Keyboard.BACKQUOTE=192;
+		Keyboard.LEFTBRACKET=219;
+		Keyboard.BACKSLASH=220;
+		Keyboard.RIGHTBRACKET=221;
+		Keyboard.QUOTE=222;
+		Keyboard.ALTERNATE=18;
+		Keyboard.BACKSPACE=8;
+		Keyboard.CAPS_LOCK=20;
+		Keyboard.COMMAND=15;
+		Keyboard.CONTROL=17;
+		Keyboard.DELETE=46;
+		Keyboard.ENTER=13;
+		Keyboard.ESCAPE=27;
+		Keyboard.PAGE_UP=33;
+		Keyboard.PAGE_DOWN=34;
+		Keyboard.END=35;
+		Keyboard.HOME=36;
+		Keyboard.LEFT=37;
+		Keyboard.UP=38;
+		Keyboard.RIGHT=39;
+		Keyboard.DOWN=40;
+		Keyboard.SHIFT=16;
+		Keyboard.SPACE=32;
+		Keyboard.TAB=9;
+		Keyboard.INSERT=45;
+		return Keyboard;
+	})()
+
+
+	/**
 	*<p><code>KeyBoardManager</code> 是键盘事件管理类。该类从浏览器中接收键盘事件，并派发该事件。</p>
 	*<p>派发事件时若 Stage.focus 为空则只从 Stage 上派发该事件，否则将从 Stage.focus 对象开始一直冒泡派发该事件。所以在 Laya.stage 上监听键盘事件一定能够收到，如果在其他地方监听，则必须处在Stage.focus的冒泡链上才能收到该事件。</p>
 	*<p>用户可以通过代码 Laya.stage.focus=someNode 的方式来设置focus对象。</p>
@@ -11459,6 +11569,89 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
+	*
+	*@author ww
+	*@version 1.0
+	*
+	*@created 2016-4-20 下午4:48:41
+	*/
+	//class extendui.KeyManager
+	var KeyManager=(function(){
+		function KeyManager(){
+			this.isCommandKeyDown=false;
+		}
+
+		__class(KeyManager,'extendui.KeyManager');
+		var __proto=KeyManager.prototype;
+		__proto.init=function(){
+			Laya.stage.on("keydown",this,this.keyDown);
+			Laya.stage.on("keyup",this,this.keyUp);
+			Laya.stage.on("blur",this,this.onBlur);
+		}
+
+		__proto.onBlur=function(){
+			this.isCommandKeyDown=false;
+		}
+
+		__proto.isCommandKey=function(keyCode){
+			if(KeyManager.commandKeys[keyCode])return true;
+			return false;
+		}
+
+		__proto.keyDown=function(e){
+			if(this.isCommandKey(e.keyCode)){
+				this.isCommandKeyDown=true;
+			}
+			if(Input.isInputting){
+				this.isCommandKeyDown=false;
+			}
+		}
+
+		__proto.keyUp=function(e){
+			if(Input.isInputting){
+				this.isCommandKeyDown=false;
+			}
+			if(this.isCommandKey(e.keyCode)){
+				this.isCommandKeyDown=false;
+			}
+		}
+
+		KeyManager.isABC=function(keyCode){
+			return keyCode>=65&&keyCode<=90;
+		}
+
+		KeyManager.getCharByCode=function(code){
+			return String.fromCharCode(code);
+		}
+
+		KeyManager.setNewFocus=function(item){
+			if(Laya.stage.focus){
+				KeyManager.focusList.push(Laya.stage.focus);
+			}
+			Laya.stage.focus=item;
+		}
+
+		KeyManager.restoreFocus=function(){
+			if(KeyManager.focusList.length>0){
+				Laya.stage.focus=KeyManager.focusList.pop();
+			}
+		}
+
+		KeyManager.focusList=[];
+		__static(KeyManager,
+		['I',function(){return this.I=new KeyManager();},'commandKeys',function(){return this.commandKeys={
+				91:true,
+				93:true,
+				244:true,
+				17:true
+		};}
+
+		]);
+		return KeyManager;
+	})()
+
+
+	/**
 	*编辑器全局静态入口
 	*@author ww
 	*/
@@ -14362,6 +14555,15 @@ var Laya=window.Laya=(function(window,document){
 			var dataO;
 			dataO={};
 			dataO.action="addFolder";
+			dataO.token=this.token;
+			dataO.path=path;
+			HttpRequestTool.request(FileKit.root,dataO,completeHandler);
+		}
+
+		__proto.deleteFile=function(path,completeHandler){
+			var dataO;
+			dataO={};
+			dataO.action="deleteFile";
 			dataO.token=this.token;
 			dataO.path=path;
 			HttpRequestTool.request(FileKit.root,dataO,completeHandler);
@@ -28937,6 +29139,7 @@ var Laya=window.Laya=(function(window,document){
 	var FileTree=(function(_super){
 		function FileTree(){
 			this._rootNode=null;
+			this.childSortFun=null;
 			FileTree.__super.call(this);
 		}
 
@@ -28957,6 +29160,9 @@ var Laya=window.Laya=(function(window,document){
 			node.hasChild=childs && childs.length;
 			if (!node.isOpen)return;
 			if (!childs)return;
+			if (this.childSortFun !=null && childs.length){
+				childs.sort(this.childSortFun);
+			};
 			var i=0,len=0;
 			len=childs.length;
 			var tChild;
@@ -29543,6 +29749,7 @@ var Laya=window.Laya=(function(window,document){
 			this._menuDir.on("select",this,this.onEmunSelect);
 			this._mutiMenu=ContextMenu.createMenuByArray(["删除"]);
 			this._mutiMenu.on("select",this,this.onEmunSelect);
+			this.resTree.childSortFun=RemoteTreeView.sortFolderFirst;
 		}
 
 		__class(RemoteTreeView,'filekit.RemoteTreeView',_super);
@@ -29560,6 +29767,7 @@ var Laya=window.Laya=(function(window,document){
 				case "重命名":
 					break ;
 				case "删除":
+					this.deleteRes();
 					break ;
 				case "新建目录":
 					this.createDir();
@@ -29568,6 +29776,18 @@ var Laya=window.Laya=(function(window,document){
 					this.createNew();
 					break ;
 				}
+		}
+
+		__proto.deleteRes=function(){
+			if (this.resTree.selectedItem&&this.resTree.selectedItem.path){
+				Confirm.show("是否删除"+this.resTree.selectedItem.path+"?","是否删除文件",Handler.create(this,this.onDeleteBack,[this.resTree.selectedItem.path]));
+			}
+		}
+
+		__proto.onDeleteBack=function(path,sure){
+			if (sure){
+				this.fileKit.deleteFile(path,Handler.create(this,this.refresh));
+			}
 		}
 
 		__proto.createDir=function(){
@@ -29700,6 +29920,16 @@ var Laya=window.Laya=(function(window,document){
 			return directory;
 		});
 
+		RemoteTreeView.sortFolderFirst=function(dataA,dataB){
+			if (dataA.isFolder==dataB.isFolder){
+				return dataA.label > dataB.label?1:-1;
+			}
+			if (dataA.isFolder){
+				return-1;
+			}
+			return 1;
+		}
+
 		return RemoteTreeView;
 	})(RemoteTreeUI)
 
@@ -29742,6 +29972,28 @@ var Laya=window.Laya=(function(window,document){
 
 		AlertUI.uiView={"type":"Dialog","props":{"width":500,"scenecolor":"#dddddd","height":250},"child":[{"type":"Image","props":{"y":0,"x":0,"width":500,"skin":"view/bg_dialog.png","height":250,"sizeGrid":"47,20,22,37"}},{"type":"Button","props":{"x":404,"skin":"view/btn_close.png","name":"close","scaleX":0.5,"scaleY":0.5,"right":11,"y":7}},{"type":"Image","props":{"y":7,"x":9,"width":442,"skin":"comp/blank_title_dragrec.png","name":"drag","height":36}},{"type":"Label","props":{"x":28,"var":"titleLbl","text":"提示","styleSkin":"comp/label_panel_title.png","fontSize":14,"align":"center","color":"#ffffff","centerX":0,"y":16}},{"type":"Label","props":{"y":80,"x":39,"wordWrap":true,"width":422,"var":"msgLbl","valign":"middle","text":"确认内容","styleSkin":"comp/label_intro.png","multiline":true,"mouseEnabled":false,"mouseChildren":false,"isHtml":true,"height":65,"align":"center","fontSize":14,"color":"#C8C8C8"}},{"type":"Button","props":{"y":173,"x":190,"skin":"comp/button.png","name":"sure","label":"确定","labelColors":"#FFFFFF,#FFFFFF,#FFFFFF,#c5c5c5","labelSize":16,"sizeGrid":"0,4,0,4"}}]};
 		return AlertUI;
+	})(Dialog)
+
+
+	//class commonui.ui.ConfirmUI extends laya.ui.Dialog
+	var ConfirmUI=(function(_super){
+		function ConfirmUI(){
+			this.titleLbl=null;
+			this.msgLbl=null;
+			this.cancelBtn=null;
+			this.okBtn=null;
+			ConfirmUI.__super.call(this);
+		}
+
+		__class(ConfirmUI,'commonui.ui.ConfirmUI',_super);
+		var __proto=ConfirmUI.prototype;
+		__proto.createChildren=function(){
+			laya.ui.Component.prototype.createChildren.call(this);
+			this.createView(ConfirmUI.uiView);
+		}
+
+		ConfirmUI.uiView={"type":"Dialog","props":{"width":500,"scenecolor":"#dddddd","height":250},"child":[{"type":"Image","props":{"y":0,"x":0,"width":500,"skin":"view/bg_dialog.png","height":250,"sizeGrid":"47,20,22,37"}},{"type":"Button","props":{"x":404,"skin":"view/btn_close.png","name":"close","scaleX":0.5,"scaleY":0.5,"right":11,"y":7}},{"type":"Image","props":{"y":7,"x":9,"width":441,"skin":"comp/blank_title_dragrec.png","name":"drag","height":36}},{"type":"Label","props":{"x":21,"var":"titleLbl","text":"确认框","styleSkin":"comp/label_panel_title.png","fontSize":14,"align":"center","color":"#ffffff","centerX":0,"y":16}},{"type":"Label","props":{"y":68,"x":36,"wordWrap":true,"width":427,"var":"msgLbl","valign":"middle","text":"确认内容","styleSkin":"comp/label_intro.png","multiline":true,"mouseEnabled":false,"mouseChildren":false,"isHtml":true,"height":76,"align":"center","fontSize":14,"color":"#C8C8C8"}},{"type":"Button","props":{"y":165,"x":288,"var":"cancelBtn","skin":"comp/btn.png","name":"cancel","label":"取消","labelColors":"#FFFFFF,#FFFFFF,#FFFFFF,#c5c5c5","labelSize":16,"sizeGrid":"0,4,0,4"}},{"type":"Button","props":{"y":165,"x":98,"var":"okBtn","skin":"comp/button.png","name":"sure","label":"确定","labelColors":"#FFFFFF,#FFFFFF,#FFFFFF,#c5c5c5","labelSize":16,"sizeGrid":"0,4,0,4"}}]};
+		return ConfirmUI;
 	})(Dialog)
 
 
@@ -30426,6 +30678,69 @@ var Laya=window.Laya=(function(window,document){
 		Alert._instance=null
 		return Alert;
 	})(AlertUI)
+
+
+	/**确认框
+	*@author ww
+	*/
+	//class view.Confirm extends commonui.ui.ConfirmUI
+	var Confirm=(function(_super){
+		function Confirm(){
+			this._handler=null;
+			this._args=null;
+			Confirm.__super.call(this);
+			this.on("keydown",this,this.onKeyDown);
+		}
+
+		__class(Confirm,'view.Confirm',_super);
+		var __proto=Confirm.prototype;
+		__proto.start=function(msg,title,handler,args){
+			this.titleLbl.text=title;
+			this.msgLbl.text=msg;
+			this._handler=handler;
+			this._args=args;
+			this.popup();
+			KeyManager.setNewFocus(this);
+		}
+
+		__proto.close=function(type){
+			laya.ui.Dialog.prototype.close.call(this,type);
+			if (this._handler !=null){
+				var data=[type=="sure",type];
+				if((this._handler instanceof laya.utils.Handler )){
+					(this._handler).runWith(data);
+				}else
+				this._handler.apply(null,this._args ? this._args.concat(data):data);
+			}
+			KeyManager.restoreFocus();
+		}
+
+		__proto.onKeyDown=function(e){
+			switch(e.keyCode){
+				case 13:
+					this.close("sure");
+					break ;
+				case 27:
+					this.close("cancel");
+					break ;
+				}
+		}
+
+		__getset(1,Confirm,'instance',function(){
+			return Confirm._instance ? Confirm._instance :Confirm._instance=new Confirm();
+		},commonui.ui.ConfirmUI._$SET_instance);
+
+		Confirm.show=function(msg,title,handler,args,okName,cancelName){
+			if(!okName)okName=Sys.lang("确定");
+			if(!cancelName)cancelName=Sys.lang("取消");
+			Confirm.instance.okBtn.label=okName;
+			Confirm.instance.cancelBtn.label=cancelName;
+			Confirm.instance.start(msg,title,handler,args);
+		}
+
+		Confirm._instance=null
+		return Confirm;
+	})(ConfirmUI)
 
 
 	Laya.__init([LoaderManager,EventDispatcher,Browser,Render,View,Timer,GraphicAnimation,LocalStorage]);
