@@ -806,6 +806,7 @@ var Laya=window.Laya=(function(window,document){
 			this.switchBtn.left=this.mindMapEditor.left;
 			this.switchBtn.on("click",this,this.onSwitchBtn);
 			Notice.listen("Open_File",this,this.onOpenFile);
+			this.openFileByPath("FirstOfAll.demorender");
 		}
 
 		__proto.onSwitchBtn=function(){
@@ -837,6 +838,10 @@ var Laya=window.Laya=(function(window,document){
 		__proto.onOpenFile=function(dataO){
 			var filePath;
 			filePath=dataO.path;
+			this.openFileByPath(filePath);
+		}
+
+		__proto.openFileByPath=function(filePath){
 			if (filePath==this.preLoadFile)return;
 			this.preLoadFile=filePath;
 			this.tID++;
