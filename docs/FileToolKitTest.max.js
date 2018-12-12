@@ -29150,6 +29150,20 @@ var Laya=window.Laya=(function(window,document){
 
 		__class(FileTree,'filetoolkit.FileTree',_super);
 		var __proto=FileTree.prototype;
+		__proto.recoverState=function(newTree,oldTree){
+			if (!newTree || !oldTree)return;
+			var newDic;
+			newDic=FileTree.buildTreeLabelDic(newTree);
+			var oldDic;
+			oldDic=FileTree.buildTreeLabelDic(oldTree);
+			var key;
+			for (key in newDic){
+				if (newDic[key] && newDic[key].isFolder && oldDic[key]){
+					newDic[key].isOpen=oldDic[key].isOpen;
+				}
+			}
+		}
+
 		__proto.getArray=function(){
 			var arr;
 			arr=[];
@@ -29185,9 +29199,31 @@ var Laya=window.Laya=(function(window,document){
 		__getset(0,__proto,'rootNode',function(){
 			return this._rootNode;
 			},function(value){
+			this.recoverState(value,this._rootNode);
 			this._rootNode=value;
 			this.list.array=this.getArray();
 		});
+
+		FileTree.buildTreeLabelDic=function(node,parentLabel,rstObj){
+			if (!rstObj){
+				rstObj={};
+			}
+			if (!parentLabel)parentLabel="";
+			var tLabel;
+			tLabel=node.label;
+			tLabel=parentLabel+","+tLabel;
+			rstObj[tLabel]=node;
+			var i=0,len=0;
+			var childs;
+			childs=node.childs;
+			if (childs){
+				len=childs.length;
+				for (i=0;i < len;i++){
+					FileTree.buildTreeLabelDic(childs[i],tLabel,rstObj);
+				}
+			}
+			return rstObj;
+		}
 
 		return FileTree;
 	})(Tree)
