@@ -33548,7 +33548,11 @@ var Laya=window.Laya=(function(window,document){
 			for (i=0;i < len;i++){
 				tChild=childNodes[i];
 				childItemHeight=tChild.getItemHeight();
-				tChild.setPos(childX,tY,isRight);
+				if (isRight){
+					tChild.setPos(childX,tY,isRight);
+					}else{
+					tChild.setPos(x-tChild.width-MindMapItem.XSpace,tY,isRight);
+				}
 				tY+=childItemHeight+MindMapItem.YSpace;
 			}
 		}
