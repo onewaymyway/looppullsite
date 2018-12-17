@@ -31781,7 +31781,7 @@ var Laya=window.Laya=(function(window,document){
 			this.createView(MapItemUI.uiView);
 		}
 
-		MapItemUI.uiView={"type":"View","props":{"width":162,"height":22},"child":[{"type":"TextInput","props":{"var":"text","text":"TextInput","skin":"comp/textinput.png","color":"#93eedf","align":"center"}},{"type":"Button","props":{"y":11,"x":131,"var":"downBtn","skin":"comp/down.png"}},{"type":"Button","props":{"y":-1,"x":131,"var":"upBtn","skin":"comp/up.png"}},{"type":"Radio","props":{"y":4,"x":147,"var":"selectBtn","skin":"comp/selectbtn.png"}}]};
+		MapItemUI.uiView={"type":"View","props":{"width":162,"height":22},"child":[{"type":"TextInput","props":{"var":"text","text":"TextInput","skin":"comp/textinput.png","sizeGrid":"7,10,5,5","right":33,"left":0,"color":"#93eedf","align":"center"}},{"type":"Button","props":{"y":11,"var":"downBtn","skin":"comp/down.png","right":19}},{"type":"Button","props":{"y":-1,"var":"upBtn","skin":"comp/up.png","right":19}},{"type":"Radio","props":{"y":4,"var":"selectBtn","skin":"comp/selectbtn.png","right":1}}]};
 		return MapItemUI;
 	})(View)
 
@@ -33419,7 +33419,11 @@ var Laya=window.Laya=(function(window,document){
 
 		__proto.freshUI=function(){
 			this.text.editable=MindMapEditor.isEditorMode;
-			this.text.text=this.nodeData.label||"";
+			this.text.text=this.nodeData.label || "";
+			this.text.width=400;
+			this.text.textField.typeset();
+			this.text.width=this.text.textField.textWidth+20;
+			this.width=this.text.textField.textWidth+20+33;
 		}
 
 		__proto.drawConnections=function(sprite){
@@ -33470,6 +33474,20 @@ var Laya=window.Laya=(function(window,document){
 			return totalHeight;
 		}
 
+		__proto.getItemWidth=function(childNodes){
+			if (!childNodes)childNodes=this.childNodes;
+			if (!childNodes || !childNodes.length)return 0;
+			var maxWidth=0;
+			var i=0,len=0;
+			len=childNodes.length;
+			var tChild;
+			for (i=0;i < len;i++){
+				tChild=childNodes[i];
+				maxWidth=Math.max(maxWidth,tChild.width);
+			}
+			return maxWidth;
+		}
+
 		__proto.setPos=function(x,y,isRight){
 			(isRight===void 0)&& (isRight=true);
 			this.layoutChilds(this.childNodes,x,y,isRight);
@@ -33504,6 +33522,9 @@ var Laya=window.Laya=(function(window,document){
 			(lockPos===void 0)&& (lockPos=false);
 			var itemHeight=NaN;
 			itemHeight=this.getItemHeight(childNodes);
+			var itemWidth=NaN;
+			itemWidth=this.getItemWidth(childNodes);
+			itemWidth=Math.max(this.width,itemWidth);
 			if (!lockPos){
 				this.pos(x,y+itemHeight *0.5);
 				}else{
@@ -33515,7 +33536,7 @@ var Laya=window.Laya=(function(window,document){
 			if (isRight){
 				childX=x+this.width+MindMapItem.XSpace;
 				}else{
-				childX=x-this.width-MindMapItem.XSpace;
+				childX=x-itemWidth-MindMapItem.XSpace;
 			};
 			var tChild;
 			var tY=NaN;
