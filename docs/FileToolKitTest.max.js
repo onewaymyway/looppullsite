@@ -13578,6 +13578,7 @@ var Laya=window.Laya=(function(window,document){
 		function CommonUIConsts(){}
 		__class(CommonUIConsts,'commonui.consts.CommonUIConsts');
 		CommonUIConsts.fileNameRestrict="0-9a-zA-Z_";
+		CommonUIConsts.fileNameRestrictEx="\u4E00-\uFA29\uE7C7-\uE7F30-9a-zA-Z_";
 		return CommonUIConsts;
 	})()
 
@@ -34475,6 +34476,7 @@ var Laya=window.Laya=(function(window,document){
 			oldName=FilePathUtils.getFileName(oldPath);
 			this.resLbl.text=oldName;
 			this.nameTxt.restrict="0-9a-zA-Z_";
+			this.nameTxt.restrict="\u4E00-\uFA29\uE7C7-\uE7F30-9a-zA-Z_";
 			this.nameTxt.text=oldName;
 			this.popup();
 			Laya.stage.focus=this.nameTxt.textField;
