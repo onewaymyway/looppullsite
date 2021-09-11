@@ -744,7 +744,7 @@ var Laya=window.Laya=(function(window,document){
 		__class(TestRemoteView,'TestRemoteView');
 		var __proto=TestRemoteView.prototype;
 		__proto.initFileToolKit=function(){
-			FileKit.root="https://stk.orzooo.com:9953";
+			FileKit.root="https://180.76.240.146:9953";
 			this.fileKit=new FileKit();
 			FileKit.I=this.fileKit;
 			this.fileKit.on("Logined",this,this.onLogin);
